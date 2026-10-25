@@ -4,8 +4,10 @@ import {
   interpolate,
   useCurrentFrame,
   Audio,
+  staticFile,
 } from 'remotion';
-import { generateGeigerClick, generateCountdownBeep } from '../utils/audioGenerator';
+import { CinematicSubtitles } from '../components/CinematicSubtitles';
+import { generateCountdownBeep } from '../utils/audioGenerator';
 
 export const Scene2ForbiddenCommand: React.FC = () => {
   const frame = useCurrentFrame();
@@ -30,8 +32,7 @@ export const Scene2ForbiddenCommand: React.FC = () => {
     extrapolateRight: 'clamp',
   });
 
-  // Screen tremor at the end
-  const shake = frame > 70 ? (Math.sin(frame * 2.5) * 4) : 0;
+  const shake = frame > 70 ? Math.sin(frame * 2.5) * 4 : 0;
 
   return (
     <AbsoluteFill
@@ -47,8 +48,16 @@ export const Scene2ForbiddenCommand: React.FC = () => {
         transform: `translate(${shake}px, ${shake * 0.5}px)`,
       }}
     >
-      {/* Rapid geiger clicks during typing */}
-      {frame < 50 && frame % 6 === 0 && <Audio src={generateGeigerClick()} volume={0.5} />}
+      {/* Voiceover 2 */}
+      {frame >= 2 && (
+        <Audio src={staticFile('audio/vo_scene2.mp3')} volume={1.0} />
+      )}
+
+      {/* Mechanical Keyboard Clacking Audio */}
+      {frame === 5 && (
+        <Audio src={staticFile('audio/keyboard_typing.wav')} volume={0.75} />
+      )}
+
       {/* Warning Alert Sound */}
       {frame === 50 && <Audio src={generateCountdownBeep(440)} volume={0.8} />}
       {frame === 75 && <Audio src={generateCountdownBeep(880)} volume={0.9} />}
@@ -60,8 +69,10 @@ export const Scene2ForbiddenCommand: React.FC = () => {
           backgroundColor: '#0f1015',
           border: '2px solid #27272a',
           borderRadius: 16,
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 40px rgba(239, 68, 68, 0.2)',
+          boxShadow:
+            '0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 40px rgba(239, 68, 68, 0.2)',
           overflow: 'hidden',
+          marginBottom: 120,
         }}
       >
         {/* Terminal Header */}
@@ -75,9 +86,30 @@ export const Scene2ForbiddenCommand: React.FC = () => {
             borderBottom: '1px solid #27272a',
           }}
         >
-          <div style={{ width: 18, height: 18, borderRadius: '50%', backgroundColor: '#ef4444' }} />
-          <div style={{ width: 18, height: 18, borderRadius: '50%', backgroundColor: '#eab308' }} />
-          <div style={{ width: 18, height: 18, borderRadius: '50%', backgroundColor: '#22c55e' }} />
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: '50%',
+              backgroundColor: '#ef4444',
+            }}
+          />
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: '50%',
+              backgroundColor: '#eab308',
+            }}
+          />
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: '50%',
+              backgroundColor: '#22c55e',
+            }}
+          />
           <span style={{ marginLeft: 16, fontSize: 20, color: '#a1a1aa' }}>
             bash — root@oppenheimer-core:~
           </span>
@@ -128,7 +160,14 @@ export const Scene2ForbiddenCommand: React.FC = () => {
                 gap: 12,
               }}
             >
-              <div style={{ color: '#ef4444', fontSize: 26, fontWeight: 900, letterSpacing: '2px' }}>
+              <div
+                style={{
+                  color: '#ef4444',
+                  fontSize: 26,
+                  fontWeight: 900,
+                  letterSpacing: '2px',
+                }}
+              >
                 ☢️ CRITICAL SAFETY INTERLOCK ENGAGED
               </div>
               <div style={{ color: '#fca5a5', fontSize: 22 }}>
@@ -136,7 +175,11 @@ export const Scene2ForbiddenCommand: React.FC = () => {
                 <br />
                 • 0 Staging environments tested
                 <br />
-                • Flag <span style={{ color: '#fff', fontWeight: 'bold' }}>--force</span> will annihilate history
+                • Flag{' '}
+                <span style={{ color: '#fff', fontWeight: 'bold' }}>
+                  --force
+                </span>{' '}
+                will annihilate history
               </div>
             </div>
           )}
@@ -148,8 +191,8 @@ export const Scene2ForbiddenCommand: React.FC = () => {
         <div
           style={{
             position: 'absolute',
-            bottom: 220,
-            fontSize: 34,
+            bottom: 240,
+            fontSize: 32,
             fontWeight: 800,
             letterSpacing: '5px',
             color: frame % 10 < 5 ? '#ef4444' : '#fff',
@@ -159,6 +202,13 @@ export const Scene2ForbiddenCommand: React.FC = () => {
           [ PRESS ENTER TO DETONATE ]
         </div>
       )}
+
+      {/* Dynamic Voiceover Subtitles */}
+      <CinematicSubtitles
+        text="His fingers tremble... over the forbidden command."
+        highlightWords={['fingers', 'tremble', 'forbidden', 'command']}
+        startFrame={2}
+      />
     </AbsoluteFill>
   );
 };

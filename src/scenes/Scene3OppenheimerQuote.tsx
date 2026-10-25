@@ -6,7 +6,9 @@ import {
   useCurrentFrame,
   useVideoConfig,
   Audio,
+  staticFile,
 } from 'remotion';
+import { CinematicSubtitles } from '../components/CinematicSubtitles';
 import { generateCountdownBeep, generateGeigerClick } from '../utils/audioGenerator';
 
 export const Scene3OppenheimerQuote: React.FC = () => {
@@ -35,8 +37,8 @@ export const Scene3OppenheimerQuote: React.FC = () => {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const shakeX = (Math.sin(frame * 1.8) * tremorMagnitude);
-  const shakeY = (Math.cos(frame * 2.2) * tremorMagnitude);
+  const shakeX = Math.sin(frame * 1.8) * tremorMagnitude;
+  const shakeY = Math.cos(frame * 2.2) * tremorMagnitude;
 
   // Countdown number calculation
   let countdownNum: string | null = null;
@@ -58,6 +60,16 @@ export const Scene3OppenheimerQuote: React.FC = () => {
         fontFamily: "'Times New Roman', Times, serif",
       }}
     >
+      {/* Voiceover 3 */}
+      {frame >= 2 && (
+        <Audio src={staticFile('audio/vo_scene3.mp3')} volume={1.0} />
+      )}
+
+      {/* Ludwig Göransson Style Violin Tension Swell */}
+      {frame === 0 && (
+        <Audio src={staticFile('audio/tension_riser.wav')} volume={0.8} />
+      )}
+
       {/* Audio beeps during countdown */}
       {frame === 70 && <Audio src={generateCountdownBeep(700)} volume={0.8} />}
       {frame === 85 && <Audio src={generateCountdownBeep(900)} volume={0.85} />}
@@ -65,7 +77,9 @@ export const Scene3OppenheimerQuote: React.FC = () => {
       {frame === 115 && <Audio src={generateCountdownBeep(1600)} volume={1.0} />}
 
       {/* Extreme rapid geiger clicks */}
-      {frame > 50 && frame % 3 === 0 && <Audio src={generateGeigerClick()} volume={0.6} />}
+      {frame > 50 && frame % 3 === 0 && (
+        <Audio src={generateGeigerClick()} volume={0.6} />
+      )}
 
       {/* Glowing backdrop orange/fire aura preparing to explode */}
       <div
@@ -74,10 +88,15 @@ export const Scene3OppenheimerQuote: React.FC = () => {
           width: 800,
           height: 800,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)',
+          background:
+            'radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)',
           filter: 'blur(60px)',
-          transform: `scale(${interpolate(frame, [60, 120], [0.8, 2.5], { extrapolateLeft: 'clamp' })})`,
-          opacity: interpolate(frame, [50, 120], [0.2, 0.9], { extrapolateLeft: 'clamp' }),
+          transform: `scale(${interpolate(frame, [60, 120], [0.8, 2.5], {
+            extrapolateLeft: 'clamp',
+          })})`,
+          opacity: interpolate(frame, [50, 120], [0.2, 0.9], {
+            extrapolateLeft: 'clamp',
+          }),
         }}
       />
 
@@ -91,6 +110,7 @@ export const Scene3OppenheimerQuote: React.FC = () => {
             textAlign: 'center',
             gap: 28,
             zIndex: 10,
+            marginBottom: 80,
           }}
         >
           <div
@@ -114,7 +134,8 @@ export const Scene3OppenheimerQuote: React.FC = () => {
                 letterSpacing: '6px',
                 color: '#f59e0b',
                 textTransform: 'uppercase',
-                textShadow: '0 0 50px rgba(245, 158, 11, 0.8), 0 0 20px #ef4444',
+                textShadow:
+                  '0 0 50px rgba(245, 158, 11, 0.8), 0 0 20px #ef4444',
                 opacity: quote2Spring,
                 transform: `scale(${interpolate(quote2Spring, [0, 1], [0.7, 1])})`,
                 lineHeight: 1.15,
@@ -151,6 +172,7 @@ export const Scene3OppenheimerQuote: React.FC = () => {
             flexDirection: 'column',
             alignItems: 'center',
             gap: 16,
+            marginBottom: 80,
           }}
         >
           <div
@@ -160,7 +182,11 @@ export const Scene3OppenheimerQuote: React.FC = () => {
               fontFamily: 'monospace',
               color: countdownNum === '0' ? '#ffffff' : '#f59e0b',
               textShadow: '0 0 80px rgba(239, 68, 68, 0.9), 0 0 30px #ffffff',
-              transform: `scale(${interpolate(frame % 15, [0, 3, 14], [1.3, 1, 0.95])})`,
+              transform: `scale(${interpolate(
+                frame % 15,
+                [0, 3, 14],
+                [1.3, 1, 0.95]
+              )})`,
             }}
           >
             {countdownNum}
@@ -179,6 +205,13 @@ export const Scene3OppenheimerQuote: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Subtitles */}
+      <CinematicSubtitles
+        text="Now I am become Developer... the Destroyer of Production."
+        highlightWords={['Developer', 'Destroyer', 'Production']}
+        startFrame={2}
+      />
     </AbsoluteFill>
   );
 };

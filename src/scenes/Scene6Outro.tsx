@@ -5,7 +5,10 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
+  Audio,
+  staticFile,
 } from 'remotion';
+import { CinematicSubtitles } from '../components/CinematicSubtitles';
 
 export const Scene6Outro: React.FC = () => {
   const frame = useCurrentFrame();
@@ -21,7 +24,7 @@ export const Scene6Outro: React.FC = () => {
     const speed = 1.2 + (i % 3) * 0.8;
     const y = 1920 - ((frame * speed * 25 + i * 80) % 2100);
     const size = 3 + (i % 4) * 2;
-    const alpha = 0.3 + ((i % 5) * 0.15);
+    const alpha = 0.3 + (i % 5) * 0.15;
     return { x, y, size, alpha };
   });
 
@@ -39,6 +42,11 @@ export const Scene6Outro: React.FC = () => {
         overflow: 'hidden',
       }}
     >
+      {/* Voiceover 6 */}
+      {frame >= 5 && (
+        <Audio src={staticFile('audio/vo_scene6.mp3')} volume={1.0} />
+      )}
+
       {/* Floating glowing embers */}
       {embers.map((e, idx) => (
         <div
@@ -68,6 +76,7 @@ export const Scene6Outro: React.FC = () => {
           zIndex: 10,
           opacity: titleSpring,
           transform: `scale(${interpolate(titleSpring, [0, 1], [0.8, 1])})`,
+          marginBottom: 100,
         }}
       >
         <div
@@ -103,7 +112,7 @@ export const Scene6Outro: React.FC = () => {
       {frame >= 20 && (
         <div
           style={{
-            marginTop: 50,
+            marginTop: 20,
             opacity: punchlineSpring,
             transform: `scale(${interpolate(punchlineSpring, [0, 1], [0.9, 1])})`,
             textAlign: 'center',
@@ -137,11 +146,11 @@ export const Scene6Outro: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          bottom: 120,
+          bottom: 40,
           display: 'flex',
           alignItems: 'center',
           gap: 12,
-          opacity: 0.7,
+          opacity: 0.6,
         }}
       >
         <div
@@ -153,10 +162,17 @@ export const Scene6Outro: React.FC = () => {
             boxShadow: '0 0 10px #06b6d4',
           }}
         />
-        <span style={{ fontSize: 20, letterSpacing: '4px', color: '#cbd5e1' }}>
+        <span style={{ fontSize: 18, letterSpacing: '4px', color: '#cbd5e1' }}>
           RENDERED WITH REMOTION & REACT
         </span>
       </div>
+
+      {/* Subtitles */}
+      <CinematicSubtitles
+        text="Zero tests. No staging. Happy weekend, developers."
+        highlightWords={['Zero', 'tests', 'staging', 'Happy', 'weekend']}
+        startFrame={5}
+      />
     </AbsoluteFill>
   );
 };

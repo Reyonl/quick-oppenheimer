@@ -6,8 +6,10 @@ import {
   useCurrentFrame,
   useVideoConfig,
   Audio,
+  staticFile,
 } from 'remotion';
-import { generateAlarmSound, generateGlitchSound } from '../utils/audioGenerator';
+import { CinematicSubtitles } from '../components/CinematicSubtitles';
+import { generateGlitchSound } from '../utils/audioGenerator';
 
 export const Scene5Fallout: React.FC = () => {
   const frame = useCurrentFrame();
@@ -39,9 +41,18 @@ export const Scene5Fallout: React.FC = () => {
         fontFamily: "'Inter', -apple-system, sans-serif",
       }}
     >
-      {/* Audio alerts */}
-      {frame === 10 && <Audio src={generateAlarmSound()} volume={0.8} />}
-      {frame === 35 && <Audio src={generateAlarmSound()} volume={0.8} />}
+      {/* Voiceover 5 */}
+      {frame >= 5 && (
+        <Audio src={staticFile('audio/vo_scene5.mp3')} volume={1.0} />
+      )}
+
+      {/* Real SFX: PagerDuty Emergency Siren & Slack Ding */}
+      {frame === 10 && (
+        <Audio src={staticFile('audio/pagerduty_alarm.wav')} volume={0.65} />
+      )}
+      {frame === 35 && (
+        <Audio src={staticFile('audio/slack_ding.wav')} volume={0.85} />
+      )}
       {frame === 60 && <Audio src={generateGlitchSound()} volume={0.7} />}
 
       {/* Red Emergency Strobe Overlay */}
@@ -59,7 +70,7 @@ export const Scene5Fallout: React.FC = () => {
       {/* Top Incident Status Banner */}
       <div
         style={{
-          marginTop: 140,
+          marginTop: 130,
           backgroundColor: '#450a0a',
           border: '2px solid #ef4444',
           borderRadius: 12,
@@ -72,10 +83,23 @@ export const Scene5Fallout: React.FC = () => {
       >
         <span style={{ fontSize: 32 }}>🚨</span>
         <div style={{ textAlign: 'left' }}>
-          <div style={{ color: '#ef4444', fontWeight: 900, fontSize: 26, letterSpacing: '2px' }}>
+          <div
+            style={{
+              color: '#ef4444',
+              fontWeight: 900,
+              fontSize: 26,
+              letterSpacing: '2px',
+            }}
+          >
             STATUS: TOTAL SYSTEM COLLAPSE
           </div>
-          <div style={{ color: '#fca5a5', fontSize: 18, fontFamily: 'monospace' }}>
+          <div
+            style={{
+              color: '#fca5a5',
+              fontSize: 18,
+              fontFamily: 'monospace',
+            }}
+          >
             GLOBAL ERROR RATE: 99.98% • ACTIVE SRE ON CALL: CRYING
           </div>
         </div>
@@ -87,9 +111,10 @@ export const Scene5Fallout: React.FC = () => {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: 24,
-          marginTop: 60,
+          gap: 20,
+          marginTop: 40,
           zIndex: 20,
+          marginBottom: 140,
         }}
       >
         {/* Card 1: PagerDuty */}
@@ -101,15 +126,21 @@ export const Scene5Fallout: React.FC = () => {
               borderRadius: 16,
               padding: 24,
               boxShadow: '0 20px 40px rgba(0,0,0,0.8)',
-              transform: `scale(${interpolate(notif1Spring, [0, 1], [0.85, 1])}) translateY(${interpolate(
+              transform: `scale(${interpolate(
                 notif1Spring,
                 [0, 1],
-                [40, 0]
-              )}px)`,
+                [0.85, 1]
+              )}) translateY(${interpolate(notif1Spring, [0, 1], [40, 0])}px)`,
               opacity: notif1Spring,
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ fontSize: 28 }}>📟</span>
                 <span style={{ fontWeight: 800, fontSize: 22, color: '#ef4444' }}>
@@ -118,8 +149,16 @@ export const Scene5Fallout: React.FC = () => {
               </div>
               <span style={{ color: '#71717a', fontSize: 16 }}>Just now</span>
             </div>
-            <div style={{ marginTop: 12, fontSize: 22, color: '#f4f4f5', fontWeight: 600 }}>
-              All 45 Kubernetes clusters unreachable. HTTP 500 across all ingress gateways.
+            <div
+              style={{
+                marginTop: 12,
+                fontSize: 22,
+                color: '#f4f4f5',
+                fontWeight: 600,
+              }}
+            >
+              All 45 Kubernetes clusters unreachable. HTTP 500 across all ingress
+              gateways.
             </div>
           </div>
         )}
@@ -133,15 +172,21 @@ export const Scene5Fallout: React.FC = () => {
               borderRadius: 16,
               padding: 24,
               boxShadow: '0 20px 40px rgba(0,0,0,0.8)',
-              transform: `scale(${interpolate(notif2Spring, [0, 1], [0.85, 1])}) translateY(${interpolate(
+              transform: `scale(${interpolate(
                 notif2Spring,
                 [0, 1],
-                [40, 0]
-              )}px)`,
+                [0.85, 1]
+              )}) translateY(${interpolate(notif2Spring, [0, 1], [40, 0])}px)`,
               opacity: notif2Spring,
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ fontSize: 28 }}>💬</span>
                 <span style={{ fontWeight: 800, fontSize: 22, color: '#38bdf8' }}>
@@ -150,8 +195,16 @@ export const Scene5Fallout: React.FC = () => {
               </div>
               <span style={{ color: '#71717a', fontSize: 16 }}>10s ago</span>
             </div>
-            <div style={{ marginTop: 12, fontSize: 24, color: '#fef08a', fontWeight: 'bold' }}>
-              CTO: &ldquo;WHO COMMITTED DIRECTLY TO MAIN AT 4:59 PM?! ANSWER ME NOW.&rdquo;
+            <div
+              style={{
+                marginTop: 12,
+                fontSize: 24,
+                color: '#fef08a',
+                fontWeight: 'bold',
+              }}
+            >
+              CTO: &ldquo;WHO COMMITTED DIRECTLY TO MAIN AT 4:59 PM?! ANSWER ME
+              NOW.&rdquo;
             </div>
           </div>
         )}
@@ -165,15 +218,21 @@ export const Scene5Fallout: React.FC = () => {
               borderRadius: 16,
               padding: 24,
               boxShadow: '0 20px 40px rgba(0,0,0,0.8)',
-              transform: `scale(${interpolate(notif3Spring, [0, 1], [0.85, 1])}) translateY(${interpolate(
+              transform: `scale(${interpolate(
                 notif3Spring,
                 [0, 1],
-                [40, 0]
-              )}px)`,
+                [0.85, 1]
+              )}) translateY(${interpolate(notif3Spring, [0, 1], [40, 0])}px)`,
               opacity: notif3Spring,
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ fontSize: 28 }}>🗄️</span>
                 <span style={{ fontWeight: 800, fontSize: 22, color: '#ec4899' }}>
@@ -183,36 +242,19 @@ export const Scene5Fallout: React.FC = () => {
               <span style={{ color: '#71717a', fontSize: 16 }}>Just now</span>
             </div>
             <div style={{ marginTop: 12, fontSize: 22, color: '#f4f4f5' }}>
-              &ldquo;The production database... is an empty file named <code>test.sql</code>.&rdquo;
+              &ldquo;The production database... is an empty file named{' '}
+              <code>test.sql</code>.&rdquo;
             </div>
           </div>
         )}
       </div>
 
-      {/* Oppenheimer Dark Quote Footer */}
-      {frame >= 80 && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 200,
-            textAlign: 'center',
-            maxWidth: '85%',
-            fontFamily: "'Times New Roman', Times, serif",
-            fontStyle: 'italic',
-            fontSize: 30,
-            lineHeight: 1.5,
-            color: '#e4e4e7',
-            borderTop: '1px solid #3f3f46',
-            paddingTop: 24,
-          }}
-        >
-          &ldquo;Prometheus gave fire to mankind.
-          <br />
-          <span style={{ color: '#f87171', fontWeight: 'bold', fontStyle: 'normal' }}>
-            We gave root privileges to an unpaid intern.
-          </span>&rdquo;
-        </div>
-      )}
+      {/* Dynamic Subtitles */}
+      <CinematicSubtitles
+        text="Total collapse. All microservices... annihilated."
+        highlightWords={['Total', 'collapse', 'microservices', 'annihilated']}
+        startFrame={5}
+      />
     </AbsoluteFill>
   );
 };

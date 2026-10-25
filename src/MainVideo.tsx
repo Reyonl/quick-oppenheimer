@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Sequence } from 'remotion';
+import { AbsoluteFill, Sequence, Audio, staticFile } from 'remotion';
 import { FilmGrain } from './components/FilmGrain';
 import { Vignette } from './components/Vignette';
 import { Scene1Inciting } from './scenes/Scene1Inciting';
@@ -12,6 +12,9 @@ import { Scene6Outro } from './scenes/Scene6Outro';
 export const MainVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: '#000000', overflow: 'hidden' }}>
+      {/* Background Sub Drone Ambience */}
+      <Audio src={staticFile('audio/sub_drone.wav')} volume={0.35} />
+
       {/* Scene 1: Inciting Incident (0s - 3s) */}
       <Sequence from={0} durationInFrames={90}>
         <Scene1Inciting />
