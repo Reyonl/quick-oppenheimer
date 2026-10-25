@@ -1,5 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, Sequence } from 'remotion';
+import { AudioTrack } from './components/AudioTrack';
 import { Camera } from './components/Camera';
 import { FilmGrain } from './components/FilmGrain';
 import { Vignette } from './components/Vignette';
@@ -25,6 +26,9 @@ export const SCENE_7_MORAL = { from: 540, durationInFrames: 60 };
 export const MainVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: '#000000', overflow: 'hidden' }}>
+      {/* Central Audio Engine: Full Sound Design & Oppenheimer Voiceover */}
+      <AudioTrack />
+
       {/* Shared Camera Wrapper: Push-in + Exponentially Decaying Seeded Shake + Impact Flash & Chromatic Aberration */}
       <Camera>
         {/* Scene 1: HOOK (0-60) */}

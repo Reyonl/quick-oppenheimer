@@ -3,8 +3,6 @@ import {
   AbsoluteFill,
   interpolate,
   useCurrentFrame,
-  Audio,
-  staticFile,
 } from 'remotion';
 import { Caption } from '../components/Caption';
 import { monoFont } from '../utils/fonts';
@@ -22,9 +20,6 @@ export const Scene2Command: React.FC = () => {
   );
   const displayedCommand = command.slice(0, typedCount);
 
-  // Play key click every 2 frames during typing
-  const isTyping = frame >= 5 && frame <= 40 && frame % 3 === 0;
-
   // Interlock box appears at frame 42
   const showInterlock = frame >= 42;
 
@@ -33,10 +28,9 @@ export const Scene2Command: React.FC = () => {
 
   // User types 'y' at frame 72
   const typedY = frame >= 72;
-  const isKeyClickY = frame === 72;
 
   // Hits Enter at frame 80 (rel frame 80, global frame 140)
-  const isEnter = frame === 80;
+  const isEnter = frame >= 80;
 
   // Slow push in for terminal
   const pushScale = interpolate(frame, [0, 90], [1.0, 1.05], {
@@ -54,17 +48,6 @@ export const Scene2Command: React.FC = () => {
         transform: `scale(${pushScale})`,
       }}
     >
-      {/* Audio SFX: Key clicks */}
-      {isTyping && (
-        <Audio src={staticFile('sfx/key_click.wav')} volume={0.7} />
-      )}
-      {isKeyClickY && (
-        <Audio src={staticFile('sfx/key_click.wav')} volume={0.85} />
-      )}
-      {isEnter && (
-        <Audio src={staticFile('sfx/key_click.wav')} volume={1.0} />
-      )}
-
       {/* Terminal Window Box filling the main area */}
       <div
         style={{

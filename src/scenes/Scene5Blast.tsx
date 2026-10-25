@@ -3,8 +3,6 @@ import {
   AbsoluteFill,
   interpolate,
   useCurrentFrame,
-  Audio,
-  staticFile,
 } from 'remotion';
 import { Caption } from '../components/Caption';
 import { serifFont, monoFont } from '../utils/fonts';
@@ -21,9 +19,6 @@ const SHRAPNEL_DATA = [
 
 export const Scene5Blast: React.FC = () => {
   const frame = useCurrentFrame();
-
-  // Boom audio plays at frame 0
-  const playBoom = frame === 0;
 
   // Counter 1: Yield requests spinning up from 0 to 100,000 req/s
   const reqCount = Math.floor(
@@ -70,11 +65,6 @@ export const Scene5Blast: React.FC = () => {
         fontFamily: monoFont,
       }}
     >
-      {/* Audio SFX: Massive Boom */}
-      {playBoom && (
-        <Audio src={staticFile('sfx/boom.wav')} volume={1.0} />
-      )}
-
       {/* SVG Definitions for feTurbulence displacement on fireball */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
