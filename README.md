@@ -8,9 +8,17 @@ A dramatic, cinematic 9:16 vertical video built purely in code using **Remotion 
 
 ## 📽️ Video Features
 
-- **Format:** 9:16 Vertical (1080 x 1920) at 30 FPS, 20 seconds duration (600 frames). Perfect for TikTok, YouTube Shorts, and Instagram Reels.
-- **Cinematic Overlays:** Procedural 70mm IMAX film grain (`FilmGrain.tsx`), lens vignette, and chromatic aberration.
-- **Procedural Sound Engine:** Pure mathematical WAV PCM synthesis (`audioGenerator.ts`) generating heartbeat thumps, Geiger counter clicks, tech countdown beeps, atomic explosion bass sweeps, and emergency siren glitches without external network dependencies.
+- **Format:** 9:16 Vertical (1080 x 1920) at 30 FPS, 20 seconds duration (600 frames). Ready for TikTok, YouTube Shorts, and Instagram Reels.
+- **AI Voiceover (Edge-TTS):** Haunting baritone whisper narration (`en-US-ChristopherNeural`) styled after Cillian Murphy / Christopher Nolan's *Oppenheimer*.
+- **Dynamic Animated Subtitles:** TikTok-style kinetic captions (`CinematicSubtitles.tsx`) with keyword highlighting and translucent blur cards for instant viewer comprehension (even on mute).
+- **Cinematic Overlays:** Procedural 70mm IMAX film grain (`FilmGrain.tsx`), anamorphic vignette, and chromatic aberration.
+- **Cinematic SFX Suite:** 
+  - Mechanical blue-switch keyboard typing (`keyboard_typing.wav`)
+  - Ludwig Göransson-style rising Shepard/violin crescendo (`tension_riser.wav`)
+  - Hans Zimmer massive atomic boom shockwave (`atomic_boom.wav`)
+  - PagerDuty SEV-0 emergency alarm siren (`pagerduty_alarm.wav`)
+  - Slack notification chime (`slack_ding.wav`)
+  - Deep 40Hz room tone drone (`sub_drone.wav`)
 - **Visual FX:** High-performance HTML5 Canvas procedural shockwaves, plasma fireballs with turbulent flame rings, and explosive particle debris.
 
 ---
@@ -19,22 +27,25 @@ A dramatic, cinematic 9:16 vertical video built purely in code using **Remotion 
 
 1. **Scene 1 (0s - 3s / Frames 0-90): The Inciting Incident**
    - Los Alamos Codebase, Friday 4:59 PM.
-   - Heartbeat pulsing and Geiger counter clicks as the clock ticks towards 5:00 PM.
+   - *VO:* "Friday. 4:59 PM. A lone engineer sits in the dark. One single push remains."
+   - Clock ticking & heartbeat pulse.
 2. **Scene 2 (3s - 6s / Frames 90-180): The Forbidden Command**
-   - Terminal prompt typing: `git push --force origin main`.
-   - Critical Safety Interlock warnings.
+   - Terminal typing: `git push --force origin main`.
+   - *VO:* "His fingers tremble... over the forbidden command."
+   - Mechanical keyboard clacks + critical safety interlock alarms.
 3. **Scene 3 (6s - 10s / Frames 180-300): The Quote & Countdown**
-   - Dramatic typography: *"Now I am become Developer... the Destroyer of Production."*
-   - Detonation countdown: `3... 2... 1...` with camera tremors.
+   - *VO:* "Now I am become Developer... the Destroyer of Production."
+   - Ludwig Göransson violin riser + Trinity countdown `3... 2... 1...`.
 4. **Scene 4 (10s - 14s / Frames 300-420): The Trinity Blast**
-   - Blinding white flash into procedural nuclear fireball and shockwave rings.
-   - Bugs flying out in 360° (`NullPointerException`, `ECONNREFUSED`, `DROP DATABASE CASCADE`, `OOM Killed`).
+   - Blinding white flash -> Hans Zimmer atomic boom with plasma fireball.
+   - *VO (whisper):* "...It worked. But at what cost?"
+   - Bugs flying out in 360° (`NullPointerException`, `DROP DATABASE`, `ECONNREFUSED`).
 5. **Scene 5 (14s - 18s / Frames 420-540): The Fallout**
-   - Emergency red rotating strobe light.
-   - PagerDuty SEV-0 alert, Slack CTO ping (*"WHO COMMITTED DIRECTLY TO MAIN?!"*), and DBA panic.
+   - Emergency red rotating strobe light + PagerDuty SEV-0 alarm & Slack CTO ping.
+   - *VO:* "Total collapse. All microservices... annihilated."
 6. **Scene 6 (18s - 20s / Frames 540-600): Outro**
    - Floating fire embers.
-   - *"Zero tests. No staging. Pure confidence. Happy weekend, developers."*
+   - *VO:* "Zero tests. No staging. Happy weekend, developers."
 
 ---
 
@@ -47,17 +58,15 @@ npm start
 ```
 
 ### 2. Render Full Video (MP4)
-Render the complete 20-second video with audio:
+Render the complete 20-second video with audio & voiceover:
 ```bash
 npm run build
 ```
-The output file will be saved to `out/oppenheimer-production.mp4`.
+The output file is saved to `out/oppenheimer-production.mp4`.
 
-### 3. Render Still Frames
-Render a single frame as high-resolution PNG:
+### 3. Generate Audio Assets (Optional)
 ```bash
-# Render explosion peak (frame 330)
-npm run still
+python scripts/generate_audio_assets.py
 ```
 
 ### 4. Type Checking

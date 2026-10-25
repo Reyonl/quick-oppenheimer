@@ -3,14 +3,14 @@ import {
   AbsoluteFill,
   interpolate,
   useCurrentFrame,
-  useVideoConfig,
   Audio,
+  staticFile,
 } from 'remotion';
+import { CinematicSubtitles } from '../components/CinematicSubtitles';
 import { generateHeartbeat, generateGeigerClick } from '../utils/audioGenerator';
 
 export const Scene1Inciting: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
   // Heartbeat triggers every ~30 frames (1s)
   const isHeartbeatFrame = frame === 10 || frame === 45 || frame === 75;
@@ -20,7 +20,6 @@ export const Scene1Inciting: React.FC = () => {
     extrapolateRight: 'clamp',
   });
 
-  // Fade in at start
   const opacity = interpolate(frame, [0, 15], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -52,9 +51,17 @@ export const Scene1Inciting: React.FC = () => {
         padding: 60,
       }}
     >
-      {/* Audio SFX */}
-      {isHeartbeatFrame && <Audio src={generateHeartbeat()} volume={0.8} />}
-      {frame % 15 === 0 && <Audio src={generateGeigerClick()} volume={0.4} />}
+      {/* Voiceover 1 */}
+      {frame >= 5 && (
+        <Audio src={staticFile('audio/vo_scene1.mp3')} volume={1.0} />
+      )}
+
+      {/* Clock ticks & Heartbeat SFX */}
+      {frame % 30 === 0 && (
+        <Audio src={staticFile('audio/clock_tick.wav')} volume={0.65} />
+      )}
+      {isHeartbeatFrame && <Audio src={generateHeartbeat()} volume={0.7} />}
+      {frame % 20 === 0 && <Audio src={generateGeigerClick()} volume={0.35} />}
 
       {/* Top Tag */}
       <div
@@ -104,25 +111,12 @@ export const Scene1Inciting: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Dramatic Subtitle */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 240,
-          textAlign: 'center',
-          maxWidth: '85%',
-          fontSize: 32,
-          lineHeight: 1.6,
-          color: '#d4d4d8',
-          fontStyle: 'italic',
-        }}
-      >
-        &ldquo;A tired developer sits in the dark...
-        <br />
-        <span style={{ color: '#fbbf24', fontWeight: 'bold', fontStyle: 'normal' }}>
-          One single push remains.
-        </span>&rdquo;
-      </div>
+      {/* Dynamic Voiceover Subtitles */}
+      <CinematicSubtitles
+        text="Friday. 4:59 PM. A lone engineer sits in the dark. One single push remains."
+        highlightWords={['Friday', '4:59', 'lone', 'dark', 'push']}
+        startFrame={5}
+      />
     </AbsoluteFill>
   );
 };

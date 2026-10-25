@@ -4,8 +4,9 @@ import {
   interpolate,
   useCurrentFrame,
   Audio,
+  staticFile,
 } from 'remotion';
-import { generateExplosionSound } from '../utils/audioGenerator';
+import { CinematicSubtitles } from '../components/CinematicSubtitles';
 
 interface FlyingBug {
   text: string;
@@ -38,13 +39,18 @@ export const Scene4TrinityBlast: React.FC = () => {
     extrapolateRight: 'clamp',
   });
 
-  // Sound triggers at frame 2
-  const playExplosion = frame === 2;
+  // Sound triggers at frame 5 (delayed shockwave impact)
+  const playExplosion = frame === 5;
 
   // Camera violent rumble
-  const rumbleStrength = interpolate(frame, [0, 15, 60, 120], [25, 20, 8, 2], {
-    extrapolateRight: 'clamp',
-  });
+  const rumbleStrength = interpolate(
+    frame,
+    [0, 15, 60, 120],
+    [25, 20, 8, 2],
+    {
+      extrapolateRight: 'clamp',
+    }
+  );
   const shakeX = Math.sin(frame * 3.7) * rumbleStrength;
   const shakeY = Math.cos(frame * 4.3) * rumbleStrength;
 
@@ -112,7 +118,6 @@ export const Scene4TrinityBlast: React.FC = () => {
     ctx.save();
     ctx.fillStyle = grad;
     ctx.beginPath();
-    // Turbulent jagged edge for fireball
     const steps = 40;
     for (let i = 0; i < steps; i++) {
       const angle = (i / steps) * Math.PI * 2;
@@ -141,7 +146,15 @@ export const Scene4TrinityBlast: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {playExplosion && <Audio src={generateExplosionSound()} volume={1.0} />}
+      {/* Hans Zimmer Massive Atomic Boom SFX */}
+      {playExplosion && (
+        <Audio src={staticFile('audio/atomic_boom.wav')} volume={1.0} />
+      )}
+
+      {/* Voiceover 4 (whisper) */}
+      {frame >= 40 && (
+        <Audio src={staticFile('audio/vo_scene4.mp3')} volume={1.0} />
+      )}
 
       {/* Fireball & Shockwaves Canvas */}
       <canvas
@@ -167,7 +180,7 @@ export const Scene4TrinityBlast: React.FC = () => {
         />
       )}
 
-      {/* Flying Bug & Error Tokens (Flying out from ground zero) */}
+      {/* Flying Bug & Error Tokens */}
       {frame > 5 &&
         BUGS_DATA.map((bug, idx) => {
           const t = frame - 5;
@@ -204,7 +217,7 @@ export const Scene4TrinityBlast: React.FC = () => {
         })}
 
       {/* Overlay Title at peak */}
-      {frame > 40 && (
+      {frame > 30 && (
         <div
           style={{
             position: 'absolute',
@@ -238,6 +251,15 @@ export const Scene4TrinityBlast: React.FC = () => {
             YIELD: 100,000 FAILED REQUESTS / SEC
           </div>
         </div>
+      )}
+
+      {/* Whisper Subtitles */}
+      {frame >= 35 && (
+        <CinematicSubtitles
+          text="...It worked. But at what cost?"
+          highlightWords={['cost', 'worked']}
+          startFrame={35}
+        />
       )}
     </AbsoluteFill>
   );
