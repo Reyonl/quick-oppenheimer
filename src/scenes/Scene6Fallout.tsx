@@ -5,8 +5,6 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
-  Audio,
-  staticFile,
 } from 'remotion';
 import { monoFont } from '../utils/fonts';
 
@@ -24,13 +22,6 @@ interface FeedItem {
 export const Scene6Fallout: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-
-  // Audio triggers on message entries
-  const isPing1 = frame === 5;
-  const isPing2 = frame === 25;
-  const isPing3 = frame === 45;
-  const isPing4 = frame === 65;
-  const isPing6 = frame === 85;
 
   // Engineer status flips at frame 102
   const showAwayStatus = frame >= 102;
@@ -106,11 +97,6 @@ export const Scene6Fallout: React.FC = () => {
         fontFamily: monoFont,
       }}
     >
-      {/* Audio notification pings */}
-      {(isPing1 || isPing2 || isPing3 || isPing4 || isPing6) && (
-        <Audio src={staticFile('sfx/notification_ping.wav')} volume={0.8} />
-      )}
-
       {/* Top Channel Header */}
       <div
         style={{

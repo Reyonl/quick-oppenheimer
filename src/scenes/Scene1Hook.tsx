@@ -5,8 +5,6 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
-  Audio,
-  staticFile,
 } from 'remotion';
 import { Caption } from '../components/Caption';
 import { serifFont, monoFont } from '../utils/fonts';
@@ -38,11 +36,6 @@ export const Scene1Hook: React.FC = () => {
         padding: 80,
       }}
     >
-      {/* Audio SFX: Clock Ticks */}
-      {frame % 30 === 0 && (
-        <Audio src={staticFile('sfx/clock_tick.wav')} volume={0.85} />
-      )}
-
       {/* Top Header & Corner Clock */}
       <div
         style={{

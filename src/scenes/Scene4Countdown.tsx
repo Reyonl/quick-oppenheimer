@@ -5,8 +5,6 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
-  Audio,
-  staticFile,
 } from 'remotion';
 import { serifFont, monoFont } from '../utils/fonts';
 
@@ -74,11 +72,6 @@ export const Scene4Countdown: React.FC = () => {
         fontFamily: monoFont,
       }}
     >
-      {/* Riser Audio (stops before frame 58 to ensure 12 frames of dead silence) */}
-      {frame === 0 && (
-        <Audio src={staticFile('sfx/riser.wav')} volume={0.9} />
-      )}
-
       {/* Expanding Ring Pulse */}
       <div
         style={{
